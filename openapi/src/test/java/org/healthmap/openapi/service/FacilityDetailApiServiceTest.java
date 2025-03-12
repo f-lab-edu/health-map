@@ -17,7 +17,7 @@ class FacilityDetailApiServiceTest {
     @DisplayName("세부 정보를 가져오는지 확인")
     public void getDetailUpdateDto() {
         String id = "JDQ4MTYyMiM1MSMkMSMkMCMkODkkMzgxMzUxIzExIyQxIyQzIyQ5OSQyNjEwMDIjNDEjJDEjJDQjJDgz";
-        FacilityDetailUpdateDto detailDto = facilityDetailService.getFacilityDetailInfo(id);
+        FacilityDetailUpdateDto detailDto = facilityDetailService.getFacilityDetailInfo(id).orElse(null);
         Assertions.assertThat(detailDto).isNotNull();
     }
 

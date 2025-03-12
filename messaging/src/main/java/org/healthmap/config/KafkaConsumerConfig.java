@@ -1,5 +1,6 @@
 package org.healthmap.config;
 
+import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.healthmap.dto.BasicInfoDto;
@@ -17,17 +18,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
+@RequiredArgsConstructor
 public class KafkaConsumerConfig {
     private final TaskExecutorConfig taskExecutorConfig;
     private final KafkaProperties kafkaProperties;
 
     @Value("${spring.kafka.bootstrap-servers}")
     private String kafkaServer;
-
-    public KafkaConsumerConfig(TaskExecutorConfig taskExecutorConfig, KafkaProperties kafkaProperties) {
-        this.taskExecutorConfig = taskExecutorConfig;
-        this.kafkaProperties = kafkaProperties;
-    }
 
     public ConsumerFactory<String, String> consumerConfig() {
         Map<String, Object> configProps = new HashMap<>();
@@ -93,7 +90,8 @@ public class KafkaConsumerConfig {
         factory.getContainerProperties().setListenerTaskExecutor(taskExecutorConfig.executor());
 
         return factory;
-    }   
+    }
+
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, BasicInfoDto> saveBasicInfoContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, BasicInfoDto> factory = new ConcurrentKafkaListenerContainerFactory<>();
@@ -103,6 +101,7 @@ public class KafkaConsumerConfig {
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
         return factory;
     }
+
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, FacilityIdDto> facilityIdContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, FacilityIdDto> factory = new ConcurrentKafkaListenerContainerFactory<>();

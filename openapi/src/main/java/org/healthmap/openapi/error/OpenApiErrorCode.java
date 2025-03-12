@@ -11,7 +11,8 @@ public enum OpenApiErrorCode {
     INPUT_OUTPUT_ERROR(400, 4000, "잘못 전송된 입력값"),
     NULL_POINT(500, 5001, "Null Point"),
     OPEN_API_REQUEST_ERROR(500, 5002, "Open Api Request 에러"),
-    TOO_MANY_TRY(500, 5003, "Too Many Try");
+    TOO_MANY_TRY(500, 5003, "Too Many Try"),
+    CONVERT_ERROR(500, 5004, "Convert 중 오류가 발생했습니다.");
 
     private final int httpStateCode;
     private final int errorCode;
