@@ -1,5 +1,6 @@
 package org.healthmap.openapi.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.healthmap.dto.BasicInfoDto;
 import org.healthmap.openapi.api.MapApi;
@@ -13,17 +14,13 @@ import java.util.Optional;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class MapApiService {
     private final MapApi mapApi;
     private final RoadNameApi roadNameApi;
 
-    public MapApiService(MapApi mapApi, RoadNameApi roadNameApi) {
-        this.mapApi = mapApi;
-        this.roadNameApi = roadNameApi;
-    }
-
     public BasicInfoDto getCoordinate(BasicInfoDto dto) {
-        MapApiRequestDto mapApiRequestDto = basicDtoToMapApiRequestDto(dto);
+        MapApiRequestDto mapApiRequestDto = basicDtoToMapApiRequestDto(dto).orElse(null);
         GeoJsonPoint coordinate = getCoordinateFromMapApi(mapApiRequestDto);
         dto.changeCoordinate(coordinate);
         return dto;
@@ -86,11 +83,12 @@ public class MapApiService {
         return new GeoJsonPoint(x, y);
     }
 
-    private MapApiRequestDto basicDtoToMapApiRequestDto(BasicInfoDto dto) {
+    private Optional<MapApiRequestDto> basicDtoToMapApiRequestDto(BasicInfoDto dto) {
         if (dto != null) {
-            return MapApiRequestDto.of(dto.getCode(), dto.getAddress());
-        } else {
-            return null;
+            MapApiRequestDto mapApiRequestDto = MapApiRequestDto.of(dto.getCode(), dto.getAddress());
+            return Optional.of(mapApiRequestDto);
         }
+        return Optional.empty();
+
     }
 }

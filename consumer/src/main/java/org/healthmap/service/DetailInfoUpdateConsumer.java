@@ -39,7 +39,7 @@ public class DetailInfoUpdateConsumer {
     public void updateDetailInfo(ConsumerRecord<String, BasicInfoDto> record, Acknowledgment ack) {
         String id = record.value().getCode();
         try {
-            FacilityDetailUpdateDto detailUpdateDto = facilityDetailApiService.getFacilityDetailInfo(id);
+            FacilityDetailUpdateDto detailUpdateDto = facilityDetailApiService.getFacilityDetailInfo(id).orElse(null);
             if (detailUpdateDto != null) {
                 updateFacilityDetail(detailUpdateDto);
                 detailUpdateCount.incrementAndGet();

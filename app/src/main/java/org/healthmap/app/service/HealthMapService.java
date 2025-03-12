@@ -21,30 +21,31 @@ import java.util.List;
 @Service
 @Slf4j
 public class HealthMapService {
-    private final MongoTemplate mongoTemplate;
     private final MedicalFacilityRepository medicalFacilityRepository;
 
     public List<HealthMapResponseDto> getAllMedicalFacility() {
         List<MedicalFacility> allFacility = medicalFacilityRepository.findAll();
-        if(!allFacility.isEmpty()) {
+        if (!allFacility.isEmpty()) {
             return allFacility.stream()
                     .map(x -> convertDocumentToDto(x, null))
                     .limit(5000)
                     .toList();
-        } else {
-            return new ArrayList<>();
         }
+        return new ArrayList<>();
+
     }
 
     // {requestDto.distance} km 이내의 시설 찾기
     public List<HealthMapResponseDto> getNearByMedicalFacility(HealthMapRequestDto requestDto) {
+        List<GeoResult<MedicalFacility>> result = medicalFacilityRepository.getLocationNear(requestDto.getX(), requestDto.getY(), requestDto.getDistance());
+        List<HealthMapResponseDto> healthMapResponseDtoList = geoResultToDtoList(result);
+
+        log.info("healthMapResponseDtoList size : {}", healthMapResponseDtoList.size());
+        return healthMapResponseDtoList;
+    }
+
+    private List<HealthMapResponseDto> geoResultToDtoList(List<GeoResult<MedicalFacility>> result) {
         List<HealthMapResponseDto> healthMapResponseDtoList = new ArrayList<>();
-        Point location = new Point(requestDto.getX(), requestDto.getY());
-        NearQuery nearQuery = NearQuery.near(location)
-                .maxDistance(new Distance(requestDto.getDistance(), Metrics.KILOMETERS))
-                .spherical(true)
-                .limit(50);
-        List<GeoResult<MedicalFacility>> result = mongoTemplate.geoNear(nearQuery, MedicalFacility.class).getContent();
 
         for (GeoResult<MedicalFacility> geoResult : result) {
             MedicalFacility content = geoResult.getContent();
@@ -52,20 +53,10 @@ public class HealthMapService {
             HealthMapResponseDto healthMapResponseDto = convertDocumentToDto(content, distance);
             healthMapResponseDtoList.add(healthMapResponseDto);
         }
-
-        log.info("healthMapResponseDtoList size : {}", healthMapResponseDtoList.size());
         return healthMapResponseDtoList;
     }
 
     private HealthMapResponseDto convertDocumentToDto(MedicalFacility doc, Double distance) {
-        return HealthMapResponseDto.of(
-                doc.getId(), doc.getName(), doc.getAddress(), doc.getPhoneNumber(), doc.getUrl(), doc.getType(),
-                doc.getState(), doc.getCity(), doc.getTown(), doc.getPostNumber(), doc.getCoordinate().getX(),
-                doc.getCoordinate().getY(), doc.getParking(), doc.getParkingEtc(), doc.getTreatmentMon(),
-                doc.getTreatmentTue(), doc.getTreatmentWed(), doc.getTreatmentThu(), doc.getTreatmentFri(),
-                doc.getTreatmentSat(), doc.getTreatmentSun(), doc.getReceiveWeek(), doc.getReceiveSat(),
-                doc.getLunchWeek(), doc.getLunchSat(), doc.getNoTreatmentSun(), doc.getNoTreatmentHoliday(),
-                doc.getEmergencyDay(), doc.getEmergencyNight(), distance
-        );
+        return HealthMapResponseDto.of(doc, distance);
     }
 }

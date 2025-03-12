@@ -61,9 +61,9 @@ public class MedicalFacilityApiService {
         CompletableFuture<Void> allFuture = CompletableFuture.allOf(futureList.toArray(new CompletableFuture[0]));
         CompletableFuture<List<BasicInfoDto>> listFuture = allFuture.thenApply(
                 x -> futureList.stream()
-                .map(CompletableFuture::join)
-                .flatMap(List::stream)
-                .collect(Collectors.toList()));
+                        .map(CompletableFuture::join)
+                        .flatMap(List::stream)
+                        .collect(Collectors.toList()));
         List<BasicInfoDto> basicInfoDtoList = listFuture.join();
         log.info("전체 크기 : {}", basicInfoDtoList.size());
         return basicInfoDtoList;
@@ -97,18 +97,16 @@ public class MedicalFacilityApiService {
             } else {
                 return null;
             }
-        } else {
-            return phoneNumber;
         }
+        return phoneNumber;
     }
 
     // pageUrl 확인
     private String checkPageUrl(String pageUrl) {
         if (pageUrl != null && pageUrl.equals("http://")) {
             return null;
-        } else {
-            return pageUrl;
         }
+        return pageUrl;
     }
 
     // x,y 좌표를 통해 Point 형식으로 변경

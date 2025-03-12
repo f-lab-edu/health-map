@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.healthmap.db.mongodb.model.MedicalFacility;
 
 
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -53,6 +54,18 @@ public class HealthMapResponseDto {
                 town, postNumber, latitude, longitude, parking, parkingEtc, treatmentMon, treatmentTue, treatmentWed,
                 treatmentThu, treatmentFri, treatmentSat, treatmentSun, receiveWeek, receiveSat,
                 lunchWeek, lunchSat, noTreatmentSun, noTreatmentHoliday, emergencyDay, emergencyNight, distance
+        );
+    }
+
+    public static HealthMapResponseDto of(MedicalFacility doc, Double distance) {
+        return new HealthMapResponseDto(
+                doc.getId(), doc.getName(), doc.getAddress(), doc.getPhoneNumber(), doc.getUrl(), doc.getType(),
+                doc.getState(), doc.getCity(), doc.getTown(), doc.getPostNumber(), doc.getCoordinate().getX(),
+                doc.getCoordinate().getY(), doc.getParking(), doc.getParkingEtc(), doc.getTreatmentMon(),
+                doc.getTreatmentTue(), doc.getTreatmentWed(), doc.getTreatmentThu(), doc.getTreatmentFri(),
+                doc.getTreatmentSat(), doc.getTreatmentSun(), doc.getReceiveWeek(), doc.getReceiveSat(),
+                doc.getLunchWeek(), doc.getLunchSat(), doc.getNoTreatmentSun(), doc.getNoTreatmentHoliday(),
+                doc.getEmergencyDay(), doc.getEmergencyNight(), distance
         );
     }
 

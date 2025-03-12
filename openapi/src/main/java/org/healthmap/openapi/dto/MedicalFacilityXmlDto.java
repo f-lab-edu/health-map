@@ -9,7 +9,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
-@ToString   //TODO: 임시 사용
 public class MedicalFacilityXmlDto {
     @JacksonXmlProperty(localName = "ykiho")
     private String code;        //암호화 요양 기호
@@ -20,21 +19,21 @@ public class MedicalFacilityXmlDto {
     @JacksonXmlProperty(localName = "telno")
     private String phoneNumber; //전화번호
     @JacksonXmlProperty(localName = "hospUrl")
-    private String pageUrl; //병원 홈페이지
+    private String pageUrl;     //병원 홈페이지
     @JacksonXmlProperty(localName = "postNo")
     private String postNumber;  //우편번호
     @JacksonXmlProperty(localName = "clCdNm")
-    private String type;    //종별코드명
+    private String type;        //종별코드명
     @JacksonXmlProperty(localName = "sidoCdNm")
-    private String state;   //시도코드명
+    private String state;       //시도코드명
     @JacksonXmlProperty(localName = "sgguCdNm")
-    private String city;    //시군구코드
+    private String city;        //시군구코드
     @JacksonXmlProperty(localName = "emdongNm")
-    private String town;  //읍면동
+    private String town;        //읍면동
     @JacksonXmlProperty(localName = "XPos")
-    private String xPos;
+    private String xPos;        //경도
     @JacksonXmlProperty(localName = "YPos")
-    private String yPos;
+    private String yPos;        //위도
 
     public MedicalFacilityXmlDto(String code, String name, String address, String phoneNumber, String pageUrl, String postNumber, String type, String state, String city, String town, String xPos, String yPos) {
         this.code = code;
