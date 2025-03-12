@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.test.context.TestPropertySource;
 
 @Configuration
 @EnableMongoRepositories(basePackages = "org.healthmap.db.mongodb.repository")
@@ -21,7 +20,7 @@ public class MongoConfig {
 
     @Bean
     public MongoTemplate mongoTemplate() {
-        return new MongoTemplate(MongoClients.create("mongodb://"+user+":"+password+"@localhost:27018/healthmap?authSource="+authSource), "healthmap");
+        return new MongoTemplate(MongoClients.create("mongodb://" + user + ":" + password + "@localhost:27018/healthmap?authSource=" + authSource), "healthmap");
     }
 
 }
