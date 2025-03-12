@@ -6,12 +6,7 @@ import org.healthmap.app.dto.HealthMapRequestDto;
 import org.healthmap.app.dto.HealthMapResponseDto;
 import org.healthmap.db.mongodb.model.MedicalFacility;
 import org.healthmap.db.mongodb.repository.MedicalFacilityRepository;
-import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.GeoResult;
-import org.springframework.data.geo.Metrics;
-import org.springframework.data.geo.Point;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.NearQuery;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
